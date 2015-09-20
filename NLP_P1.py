@@ -1,6 +1,25 @@
 #!/usr/bin/python
 
+import re
+import nltk
+from collections import Counter
+from itertools import islice, izip
+import collections
 import sys, getopt
+from nltk.collocations import BigramAssocMeasures, BigramCollocationFinder
+from nltk.util import ngrams
+from nltk import bigrams
+
+def compute_bi_gram(ifile_name) :
+	punctuations = re.compile(r'[-.?!":;)(|0-9]')
+	word_list = re.split('\s+', open(ifile_name).read().lower())
+	print 'Words in file:',len(word_list)
+	words = (punctuations.sub("",word).strip() for word in word_list)
+
+	print '-'*30
+
+		
+	print Counter(izip(words, islice(words, 1, None)))
 
 def main(argv):
 	inputfile = ''
@@ -19,6 +38,7 @@ def main(argv):
 			outputfile = arg
 	print 'Input file is ', inputfile 
 	print 'Output file is ', outputfile
+	compute_bi_gram(inputfile)
 
 if __name__ == "__main__" :
 	main(sys.argv[1:])
